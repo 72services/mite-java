@@ -1,6 +1,7 @@
 package io.seventytwo.oss.mite;
 
 import io.seventytwo.oss.mite.model.Account;
+import io.seventytwo.oss.mite.model.TimeEntries;
 import io.seventytwo.oss.mite.model.User;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -40,6 +41,15 @@ public class MiteClient {
             return getModel(responseBody, User.class);
         } else {
             return null;
+        }
+    }
+
+    public TimeEntries getTimeEntries() throws IOException {
+        ResponseBody responseBody = callMite("time_entries.xml");
+        if (responseBody != null) {
+            return getModel(responseBody, TimeEntries.class);
+        } else {
+            return new TimeEntries();
         }
     }
 

@@ -1,13 +1,17 @@
 package io.seventytwo.oss.mite;
 
 import io.seventytwo.oss.mite.model.Account;
+import io.seventytwo.oss.mite.model.TimeEntries;
 import io.seventytwo.oss.mite.model.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MiteClientTest {
 
@@ -32,5 +36,13 @@ class MiteClientTest {
         User user = miteClient.getMyself();
 
         assertNotNull(user);
+    }
+
+    @Test
+    void getTimeEntries() throws IOException {
+        TimeEntries timeEntries = miteClient.getTimeEntries();
+
+        assertNotNull(timeEntries);
+        assertFalse(timeEntries.getTimeEntry().isEmpty());
     }
 }

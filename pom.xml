@@ -62,6 +62,7 @@
                     <sources>
                         <source>src/main/resources/account.xsd</source>
                         <source>src/main/resources/myself.xsd</source>
+                        <source>src/main/resources/time-entries.xsd</source>
                     </sources>
                     <packageName>io.seventytwo.oss.mite.model</packageName>
                 </configuration>

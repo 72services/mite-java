@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) -->
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="time-entries">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="time-entry">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="billable">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:boolean">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="created-at">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:dateTime">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="date-at">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:date">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="id">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:unsignedInt">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="locked">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:boolean">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="minutes">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:unsignedByte">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="started-time">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:unsignedShort">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="project-id">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:unsignedInt">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="revenue">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:decimal">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="hourly-rate">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:unsignedShort">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="service-id">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:unsignedInt">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="updated-at">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:dateTime">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="user-id">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:unsignedShort">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="note" type="xs:string" />
+                            <xs:element name="user-name" type="xs:string" />
+                            <xs:element name="customer-id">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:unsignedInt">
+                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="customer-name" type="xs:string" />
+                            <xs:element name="project-name" type="xs:string" />
+                            <xs:element name="service-name" type="xs:string" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="type" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
