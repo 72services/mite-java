@@ -1,1 +1,1 @@
-# mite.java
+# mite-java
