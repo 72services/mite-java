@@ -3,6 +3,7 @@ package io.seventytwo.oss.mite;
 import io.seventytwo.oss.mite.model.Account;
 import io.seventytwo.oss.mite.model.TimeEntries;
 import io.seventytwo.oss.mite.model.User;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
@@ -15,12 +16,12 @@ import java.io.StringReader;
 
 public class MiteClient {
 
-    private final String baseUrl;
+    private final String host;
     private final OkHttpClient client;
     private final String apikey;
 
-    public MiteClient(String baseUrl, String apikey) {
-        this.baseUrl = baseUrl;
+    public MiteClient(String host, String apikey) {
+        this.host = host;
         this.apikey = apikey;
 
         client = new OkHttpClient().newBuilder().build();
@@ -44,8 +45,25 @@ public class MiteClient {
         }
     }
 
-    public TimeEntries getTimeEntries() throws IOException {
-        ResponseBody responseBody = callMite("time_entries.xml");
+    public TimeEntries getTimeEntries(String userId, String customerId, String projectId, String serviceId, String note,
+                                      String at, String from, String to, Boolean billable, Boolean locked, Boolean tracking,
+                                      String sort, String direction, String groupBy, Integer limit, Integer page) {
+        HttpUrl.Builder builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment("time_entries.xml");
+
+        if (userId != null) {
+            builder.addQueryParameter("user-id", userId);
+        }
+        if (customerId != null) {
+            builder.addQueryParameter("customer-id", customerId);
+        }
+        if (projectId != null) {
+            builder.addQueryParameter("project-id", projectId);
+        }
+
+        ResponseBody responseBody = callMite(builder.build());
         if (responseBody != null) {
             return getModel(responseBody, TimeEntries.class);
         } else {
@@ -54,9 +72,16 @@ public class MiteClient {
     }
 
     private ResponseBody callMite(String endpoint) {
+        return callMite(new HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment(endpoint).build());
+    }
+
+    private ResponseBody callMite(HttpUrl httpUrl) {
         try {
             Request request = new Request.Builder()
-                    .url(baseUrl + "/" + endpoint)
+                    .url(httpUrl)
                     .addHeader("X-MiteApiKey", apikey)
                     .build();
             return client.newCall(request).execute().body();
@@ -67,9 +92,11 @@ public class MiteClient {
 
     private <T> T getModel(ResponseBody responseBody, Class<T> modelClass) {
         try {
+            String responseString = responseBody.string();
+
             JAXBContext jaxbContext = JAXBContext.newInstance(modelClass);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            return (T) jaxbUnmarshaller.unmarshal(new StringReader(responseBody.string()));
+            return (T) jaxbUnmarshaller.unmarshal(new StringReader(responseString));
         } catch (IOException | JAXBException e) {
             throw new RuntimeException(e);
         }

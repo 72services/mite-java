@@ -21,7 +21,7 @@ class MiteClientTest {
 
     @BeforeAll
     static void beforeAll() {
-        miteClient = new MiteClient("https://simas.mite.yo.lk", System.getenv("MITE_APIKEY"));
+        miteClient = new MiteClient("simas.mite.yo.lk", System.getenv("MITE_APIKEY"));
     }
 
     @Test
@@ -39,8 +39,10 @@ class MiteClientTest {
     }
 
     @Test
-    void getTimeEntries() throws IOException {
-        TimeEntries timeEntries = miteClient.getTimeEntries();
+    void getTimeEntries() {
+        TimeEntries timeEntries = miteClient.getTimeEntries(null, null, null, null,
+                null, null, null, null, null ,null ,null , null ,null,
+                null, null, null);
 
         assertNotNull(timeEntries);
         assertFalse(timeEntries.getTimeEntry().isEmpty());
