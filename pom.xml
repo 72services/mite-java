@@ -7,7 +7,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>mite-java</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 
     <name>mite-java</name>
     <description>Java API for mite.</description>
