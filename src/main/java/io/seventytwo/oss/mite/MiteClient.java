@@ -133,13 +133,23 @@ public class MiteClient {
     }
 
     public Tracker startTracker(Long id) {
-        // TODO
-        throw new UnsupportedOperationException();
+        var builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment("tracker")
+                .addPathSegment(id + ".xml");
+
+        var response = patch(builder.build(), Tracker.class, new Tracker());
+        if (response.code() != 200) {
+            throw new MiteException(response.code());
+        } else {
+            return getModel(response, Tracker.class);
+        }
     }
 
     public Tracker stopTracker(Long id) {
-        // TODO
-        throw new UnsupportedOperationException();
+        Response response = deleteObject("tracker", id + ".xml");
+        return getModel(response, Tracker.class);
     }
 
     public Bookmarks getBookmarks() {
@@ -374,16 +384,20 @@ public class MiteClient {
 
     private <T> Response patch(HttpUrl httpUrl, Class<T> objClass, Object obj) {
         try {
-            var stringWriter = new StringWriter();
-            JAXBContext.newInstance(objClass).createMarshaller().marshal(obj, stringWriter);
+            RequestBody requestBody = null;
+            if (obj != null) {
+                var stringWriter = new StringWriter();
+                JAXBContext.newInstance(objClass).createMarshaller().marshal(obj, stringWriter);
 
-            var requestBody = RequestBody.create(MediaType.parse("application/xml"), stringWriter.toString());
+                requestBody = RequestBody.create(MediaType.parse("application/xml"), stringWriter.toString());
+            }
 
             var request = new Request.Builder()
                     .url(httpUrl)
                     .addHeader("X-MiteApiKey", apikey)
                     .patch(requestBody)
                     .build();
+
             return client.newCall(request).execute();
         } catch (IOException | JAXBException e) {
             throw new RuntimeException(e);
@@ -476,7 +490,7 @@ public class MiteClient {
         }
     }
 
-    private void deleteObject(String... pathSegments) {
+    private Response deleteObject(String... pathSegments) {
         var builder = new HttpUrl.Builder()
                 .scheme("https")
                 .host(host);
@@ -487,6 +501,8 @@ public class MiteClient {
         var response = delete(builder.build());
         if (response.code() != 200) {
             throw new MiteException(response.code());
+        } else {
+            return response;
         }
     }
 }

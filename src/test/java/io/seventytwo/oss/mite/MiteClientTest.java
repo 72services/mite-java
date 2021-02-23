@@ -4,6 +4,7 @@ import io.seventytwo.oss.mite.model.Customer;
 import io.seventytwo.oss.mite.model.Project;
 import io.seventytwo.oss.mite.model.Service;
 import io.seventytwo.oss.mite.model.TimeEntry;
+import io.seventytwo.oss.mite.model.Tracker;
 import io.seventytwo.oss.mite.model.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -280,5 +281,23 @@ class MiteClientTest {
         var bookmark = miteClient.getBookmark(bookmarks.getBookmark().get(0).getId().getValue());
 
         assertNotNull(bookmark);
+    }
+
+    @Test
+    void startStopTracker() {
+        var request = new TimeEntry();
+        var response = miteClient.createTimeEntry(request);
+
+        assertNotNull(response);
+
+        Tracker tracker = miteClient.startTracker(response.getId().getValue());
+        assertNotNull(tracker);
+
+        tracker = miteClient.stopTracker(response.getId().getValue());
+        assertNotNull(tracker);
+
+        assertNotNull(response);
+
+        miteClient.deleteTimeEntry(response.getId().getValue());
     }
 }
