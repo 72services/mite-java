@@ -5,9 +5,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>io.seventytwo.oss</groupId>
     <artifactId>mite-java</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
 
     <name>mite-java</name>
     <description>Java API for mite.</description>
