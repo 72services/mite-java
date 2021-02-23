@@ -18,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MiteClientTest {
 
-    public static final Logger LOGGER = Logger.getLogger(MiteClientTest.class.getName());
-
     private static MiteClient miteClient;
 
     @BeforeAll

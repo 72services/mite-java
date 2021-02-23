@@ -5,7 +5,7 @@ import io.seventytwo.oss.mite.model.Errors;
 public class MiteException extends RuntimeException {
 
     private Errors errors;
-    private int httpStatusCode;
+    private final int httpStatusCode;
 
     public MiteException(int httpStatusCode, Errors errors) {
         this.httpStatusCode = httpStatusCode;

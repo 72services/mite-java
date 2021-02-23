@@ -125,7 +125,7 @@ public class MiteClient {
     }
 
     public void deleteTimeEntry(long id) {
-        deleteObject(TimeEntry.class, "time_entries", id + ".xml");
+        deleteObject("time_entries", id + ".xml");
     }
 
     public Tracker getTracker() {
@@ -195,7 +195,7 @@ public class MiteClient {
     }
 
     public void deleteCustomer(long id) {
-        deleteObject(Customer.class, "customers", id + ".xml");
+        deleteObject("customers", id + ".xml");
     }
 
     public Projects getProjects(String name, String customerId, Integer limit, Integer page) {
@@ -249,7 +249,7 @@ public class MiteClient {
     }
 
     public void deleteProject(long id) {
-        deleteObject(Project.class, "projects", id + ".xml");
+        deleteObject("projects", id + ".xml");
     }
 
     public Services getServices(String name, Integer limit, Integer page) {
@@ -297,7 +297,7 @@ public class MiteClient {
     }
 
     public void deleteService(long id) {
-        deleteObject(Service.class, "services", id + ".xml");
+        deleteObject("services", id + ".xml");
     }
 
     public Users getUsers(String name, String email, Integer limit, Integer page) {
@@ -403,6 +403,7 @@ public class MiteClient {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <T> T getModel(Response response, Class<T> modelClass) {
         try {
             if (response.body() != null) {
@@ -475,7 +476,7 @@ public class MiteClient {
         }
     }
 
-    private <T> void deleteObject(Class<T> clazz, String... pathSegments) {
+    private void deleteObject(String... pathSegments) {
         var builder = new HttpUrl.Builder()
                 .scheme("https")
                 .host(host);

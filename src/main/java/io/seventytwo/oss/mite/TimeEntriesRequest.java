@@ -20,7 +20,7 @@ public class TimeEntriesRequest {
 
     public static class Builder {
 
-        TimeEntriesRequest timeEntriesRequest;
+        final TimeEntriesRequest timeEntriesRequest;
 
         public Builder() {
             this.timeEntriesRequest = new TimeEntriesRequest();
