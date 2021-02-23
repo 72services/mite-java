@@ -67,6 +67,8 @@
                         <source>src/main/resources/time_entry_groups.xsd</source>
                         <source>src/main/resources/time_entry.xsd</source>
                         <source>src/main/resources/tracker.xsd</source>
+                        <source>src/main/resources/customers.xsd</source>
+                        <source>src/main/resources/customer.xsd</source>
                     </sources>
                     <packageName>io.seventytwo.oss.mite.model</packageName>
                 </configuration>

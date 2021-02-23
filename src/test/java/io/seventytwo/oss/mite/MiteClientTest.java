@@ -1,6 +1,8 @@
 package io.seventytwo.oss.mite;
 
 import io.seventytwo.oss.mite.model.Account;
+import io.seventytwo.oss.mite.model.Customer;
+import io.seventytwo.oss.mite.model.Customers;
 import io.seventytwo.oss.mite.model.TimeEntries;
 import io.seventytwo.oss.mite.model.TimeEntry;
 import io.seventytwo.oss.mite.model.TimeEntryGroups;
@@ -96,5 +98,48 @@ class MiteClientTest {
         Tracker tracker = miteClient.getTracker();
 
         assertNotNull(tracker);
+    }
+
+    @Test
+    void getCustomers() {
+        Customers customers = miteClient.getCustomers();
+
+        assertNotNull(customers);
+        assertFalse(customers.getCustomer().isEmpty());
+    }
+
+    @Test
+    void getArchivedCustomers() {
+        Customers customers = miteClient.getArchivedCustomers();
+
+        assertNotNull(customers);
+        assertFalse(customers.getCustomer().isEmpty());
+    }
+
+    @Test
+    void getCustomerNotFound() {
+        assertThrows(MiteException.class, () -> miteClient.getCustomer(1));
+    }
+
+    @Test
+    void getCustomer() {
+        Customer customer = miteClient.getCustomer(264184);
+
+        assertNotNull(customer);
+    }
+
+    @Test
+    void createUpdateDeleteCustomer() {
+        Customer customer = new Customer();
+        customer.setName("Dummy");
+        Customer response = miteClient.createCustomer(customer);
+
+        assertNotNull(response);
+
+        miteClient.updateCustomer(response);
+
+        assertNotNull(response);
+
+        miteClient.deleteCustomer(response.getId().getValue());
     }
 }

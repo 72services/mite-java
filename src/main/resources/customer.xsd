@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="customer">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:unsignedInt">
+                                <xs:attribute name="type" type="xs:string" use="required" />
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="name" type="xs:string" />
+                <xs:element name="note" type="xs:string" />
+                <xs:element name="archived">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:boolean">
+                                <xs:attribute name="type" type="xs:string" use="required" />
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="hourly-rate">
+                    <xs:complexType>
+                        <xs:attribute name="type" type="xs:string" use="required" />
+                        <xs:attribute name="nil" type="xs:boolean" use="required" />
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="active-hourly-rate" type="xs:string" />
+                <xs:element name="hourly-rates-per-service">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" name="hourly-rate-per-service">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="service-id">
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:unsignedShort">
+                                                        <xs:attribute name="type" type="xs:string" use="required" />
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="hourly-rate">
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:unsignedShort">
+                                                        <xs:attribute name="type" type="xs:string" use="required" />
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="type" type="xs:string" use="required" />
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="updated-at">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:dateTime">
+                                <xs:attribute name="type" type="xs:string" use="required" />
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="created-at">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:dateTime">
+                                <xs:attribute name="type" type="xs:string" use="required" />
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

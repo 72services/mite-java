@@ -1,6 +1,8 @@
 package io.seventytwo.oss.mite;
 
 import io.seventytwo.oss.mite.model.Account;
+import io.seventytwo.oss.mite.model.Customer;
+import io.seventytwo.oss.mite.model.Customers;
 import io.seventytwo.oss.mite.model.Errors;
 import io.seventytwo.oss.mite.model.TimeEntries;
 import io.seventytwo.oss.mite.model.TimeEntry;
@@ -187,7 +189,73 @@ public class MiteClient {
         throw new UnsupportedOperationException();
     }
 
+    public Customers getCustomers() {
+        HttpUrl.Builder builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment("customers.xml");
 
+        Response response = get(builder.build());
+        return getModel(response, Customers.class);
+    }
+
+    public Customers getArchivedCustomers() {
+        HttpUrl.Builder builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment("customers")
+                .addPathSegment("archived.xml");
+
+        Response response = get(builder.build());
+        return getModel(response, Customers.class);
+    }
+
+    public Customer getCustomer(long id) {
+        HttpUrl.Builder builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment("customers")
+                .addPathSegment(id + ".xml");
+
+        Response response = get(builder.build());
+        return getModel(response, Customer.class);
+    }
+
+    public Customer createCustomer(Customer customer) {
+        HttpUrl.Builder builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment("customers.xml");
+
+        Response response = post(builder.build(), Customer.class, customer);
+        return getModel(response, Customer.class);
+    }
+
+    public void updateCustomer(Customer customer) {
+        HttpUrl.Builder builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment("customers")
+                .addPathSegment(customer.getId().getValue() + ".xml");
+
+        Response response = patch(builder.build(), Customer.class, customer);
+        if (response.code() != 200) {
+            throw new MiteException(response.code());
+        }
+    }
+
+    public void deleteCustomer(long id) {
+        HttpUrl.Builder builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment("customers")
+                .addPathSegment(id + ".xml");
+
+        Response response = delete(builder.build());
+        if (response.code() != 200) {
+            throw new MiteException(response.code());
+        }
+    }
 
     private Response get(String endpoint) {
         return get(new HttpUrl.Builder()
