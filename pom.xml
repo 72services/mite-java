@@ -60,9 +60,13 @@
                         <xjbSource>src/main/resources/global.xjb</xjbSource>
                     </xjbSources>
                     <sources>
+                        <source>src/main/resources/errors.xsd</source>
                         <source>src/main/resources/account.xsd</source>
                         <source>src/main/resources/myself.xsd</source>
                         <source>src/main/resources/time_entries.xsd</source>
+                        <source>src/main/resources/time_entry_groups.xsd</source>
+                        <source>src/main/resources/time_entry.xsd</source>
+                        <source>src/main/resources/tracker.xsd</source>
                     </sources>
                     <packageName>io.seventytwo.oss.mite.model</packageName>
                 </configuration>
