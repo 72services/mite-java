@@ -1,6 +1,5 @@
 package io.seventytwo.oss.mite;
 
-import io.seventytwo.oss.mite.model.Bookmark;
 import io.seventytwo.oss.mite.model.Customer;
 import io.seventytwo.oss.mite.model.Project;
 import io.seventytwo.oss.mite.model.Service;
