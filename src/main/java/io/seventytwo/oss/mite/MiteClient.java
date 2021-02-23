@@ -1,6 +1,8 @@
 package io.seventytwo.oss.mite;
 
 import io.seventytwo.oss.mite.model.Account;
+import io.seventytwo.oss.mite.model.Bookmark;
+import io.seventytwo.oss.mite.model.Bookmarks;
 import io.seventytwo.oss.mite.model.Customer;
 import io.seventytwo.oss.mite.model.Customers;
 import io.seventytwo.oss.mite.model.Errors;
@@ -28,7 +30,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class MiteClient {
 
@@ -141,14 +142,12 @@ public class MiteClient {
         throw new UnsupportedOperationException();
     }
 
-    public Tracker getBookmarks() {
-        // TODO
-        throw new UnsupportedOperationException();
+    public Bookmarks getBookmarks() {
+        return getObject(Bookmarks.class, "time_entries", "bookmarks.xml");
     }
 
-    public Tracker getBookmark(Long id) {
-        // TODO
-        throw new UnsupportedOperationException();
+    public Bookmark getBookmark(Long id) {
+        return getObject(Bookmark.class, "time_entries", "bookmarks", id + ".xml");
     }
 
     public Customers getCustomers(String name, Integer limit, Integer page) {

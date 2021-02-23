@@ -1,5 +1,6 @@
 package io.seventytwo.oss.mite;
 
+import io.seventytwo.oss.mite.model.Bookmark;
 import io.seventytwo.oss.mite.model.Customer;
 import io.seventytwo.oss.mite.model.Project;
 import io.seventytwo.oss.mite.model.Service;
@@ -264,4 +265,23 @@ class MiteClientTest {
         assertNotNull(user);
     }
 
+    @Test
+    void getBookmarks() {
+        var bookmarks = miteClient.getBookmarks();
+
+        assertNotNull(bookmarks);
+        assertFalse(bookmarks.getBookmark().isEmpty());
+    }
+
+    @Test
+    void getBookmark() {
+        var bookmarks = miteClient.getBookmarks();
+
+        assertNotNull(bookmarks);
+        assertFalse(bookmarks.getBookmark().isEmpty());
+
+        var bookmark = miteClient.getBookmark(bookmarks.getBookmark().get(0).getId().getValue());
+
+        assertNotNull(bookmark);
+    }
 }
