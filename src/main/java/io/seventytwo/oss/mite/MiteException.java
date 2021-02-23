@@ -23,4 +23,19 @@ public class MiteException extends RuntimeException {
     public int getHttpStatusCode() {
         return httpStatusCode;
     }
+
+    @Override
+    public String getMessage() {
+        return httpStatusCode + getErrorString();
+    }
+
+    private String getErrorString() {
+        StringBuilder sb = new StringBuilder();
+        if (errors!= null) {
+            for (String error : errors.getError()) {
+                sb.append(error).append(", ");
+            }
+        }
+        return sb.toString();
+    }
 }

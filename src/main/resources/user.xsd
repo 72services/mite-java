@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) -->
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="user">
         <xs:complexType>
             <xs:sequence>
@@ -8,30 +8,30 @@
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="xs:unsignedShort">
-                                <xs:attribute name="type" type="xs:string" use="required"/>
+                                <xs:attribute name="type" type="xs:string" use="required" />
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="name" type="xs:string"/>
-                <xs:element name="email" type="xs:string"/>
-                <xs:element name="note"/>
+                <xs:element name="name" type="xs:string" />
+                <xs:element name="email" type="xs:string" />
+                <xs:element name="note" />
                 <xs:element name="archived">
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="xs:boolean">
-                                <xs:attribute name="type" type="xs:string" use="required"/>
+                                <xs:attribute name="type" type="xs:string" use="required" />
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="role" type="xs:string"/>
-                <xs:element name="language" type="xs:string"/>
+                <xs:element name="role" type="xs:string" />
+                <xs:element name="language" type="xs:string" />
                 <xs:element name="created-at">
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="xs:dateTime">
-                                <xs:attribute name="type" type="xs:string" use="required"/>
+                                <xs:attribute name="type" type="xs:string" use="required" />
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>
@@ -40,7 +40,7 @@
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="xs:dateTime">
-                                <xs:attribute name="type" type="xs:string" use="required"/>
+                                <xs:attribute name="type" type="xs:string" use="required" />
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>

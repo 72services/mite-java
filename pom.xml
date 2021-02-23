@@ -62,13 +62,18 @@
                     <sources>
                         <source>src/main/resources/errors.xsd</source>
                         <source>src/main/resources/account.xsd</source>
-                        <source>src/main/resources/myself.xsd</source>
                         <source>src/main/resources/time_entries.xsd</source>
                         <source>src/main/resources/time_entry_groups.xsd</source>
                         <source>src/main/resources/time_entry.xsd</source>
                         <source>src/main/resources/tracker.xsd</source>
                         <source>src/main/resources/customers.xsd</source>
                         <source>src/main/resources/customer.xsd</source>
+                        <source>src/main/resources/projects.xsd</source>
+                        <source>src/main/resources/project.xsd</source>
+                        <source>src/main/resources/services.xsd</source>
+                        <source>src/main/resources/service.xsd</source>
+                        <source>src/main/resources/users.xsd</source>
+                        <source>src/main/resources/user.xsd</source>
                     </sources>
                     <packageName>io.seventytwo.oss.mite.model</packageName>
                 </configuration>

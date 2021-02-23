@@ -4,11 +4,16 @@ import io.seventytwo.oss.mite.model.Account;
 import io.seventytwo.oss.mite.model.Customer;
 import io.seventytwo.oss.mite.model.Customers;
 import io.seventytwo.oss.mite.model.Errors;
+import io.seventytwo.oss.mite.model.Project;
+import io.seventytwo.oss.mite.model.Projects;
+import io.seventytwo.oss.mite.model.Service;
+import io.seventytwo.oss.mite.model.Services;
 import io.seventytwo.oss.mite.model.TimeEntries;
 import io.seventytwo.oss.mite.model.TimeEntry;
 import io.seventytwo.oss.mite.model.TimeEntryGroups;
 import io.seventytwo.oss.mite.model.Tracker;
 import io.seventytwo.oss.mite.model.User;
+import io.seventytwo.oss.mite.model.Users;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -21,6 +26,8 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class MiteClient {
@@ -37,136 +44,91 @@ public class MiteClient {
     }
 
     public Account getAccount() {
-        Response response = get("account.xml");
-        return getModel(response, Account.class);
+        return getObject(Account.class, "account.xml");
     }
 
     public User getMyself() {
-        Response response = get("myself.xml");
-        return getModel(response, User.class);
+        return getObject(User.class, "myself.xml");
     }
 
     public TimeEntries getTimeEntries(TimeEntriesRequest timeEntriesRequest) {
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("time_entries.xml");
+        var queryParameters = new HashMap<String, String>();
 
         if (timeEntriesRequest.userId != null) {
-            builder.addQueryParameter("user_id", timeEntriesRequest.userId);
+            queryParameters.put("user_id", timeEntriesRequest.userId);
         }
         if (timeEntriesRequest.customerId != null) {
-            builder.addQueryParameter("customer_id", timeEntriesRequest.customerId);
+            queryParameters.put("customer_id", timeEntriesRequest.customerId);
         }
         if (timeEntriesRequest.projectId != null) {
-            builder.addQueryParameter("project_id", timeEntriesRequest.projectId);
+            queryParameters.put("project_id", timeEntriesRequest.projectId);
         }
         if (timeEntriesRequest.serviceId != null) {
-            builder.addQueryParameter("service_id", timeEntriesRequest.serviceId);
+            queryParameters.put("service_id", timeEntriesRequest.serviceId);
         }
         if (timeEntriesRequest.note != null) {
-            builder.addQueryParameter("note", timeEntriesRequest.note);
+            queryParameters.put("note", timeEntriesRequest.note);
         }
         if (timeEntriesRequest.at != null) {
-            builder.addQueryParameter("at", timeEntriesRequest.at);
+            queryParameters.put("at", timeEntriesRequest.at);
         }
         if (timeEntriesRequest.from != null) {
-            builder.addQueryParameter("from", timeEntriesRequest.from);
+            queryParameters.put("from", timeEntriesRequest.from);
         }
         if (timeEntriesRequest.to != null) {
-            builder.addQueryParameter("to", timeEntriesRequest.to);
+            queryParameters.put("to", timeEntriesRequest.to);
         }
         if (timeEntriesRequest.billable != null) {
-            builder.addQueryParameter("billable", timeEntriesRequest.billable.toString());
+            queryParameters.put("billable", timeEntriesRequest.billable.toString());
         }
         if (timeEntriesRequest.locked != null) {
-            builder.addQueryParameter("locked", timeEntriesRequest.locked.toString());
+            queryParameters.put("locked", timeEntriesRequest.locked.toString());
         }
         if (timeEntriesRequest.tracking != null) {
-            builder.addQueryParameter("tracking", timeEntriesRequest.tracking.toString());
+            queryParameters.put("tracking", timeEntriesRequest.tracking.toString());
         }
         if (timeEntriesRequest.sort != null) {
-            builder.addQueryParameter("sort", timeEntriesRequest.sort);
+            queryParameters.put("sort", timeEntriesRequest.sort);
         }
         if (timeEntriesRequest.direction != null) {
-            builder.addQueryParameter("direction", timeEntriesRequest.direction);
+            queryParameters.put("direction", timeEntriesRequest.direction);
         }
         if (timeEntriesRequest.limit != null) {
-            builder.addQueryParameter("limit", timeEntriesRequest.limit.toString());
+            queryParameters.put("limit", timeEntriesRequest.limit.toString());
         }
         if (timeEntriesRequest.page != null) {
-            builder.addQueryParameter("page", timeEntriesRequest.page.toString());
+            queryParameters.put("page", timeEntriesRequest.page.toString());
         }
 
-        Response response = get(builder.build());
-        return getModel(response, TimeEntries.class);
+        return getObject(TimeEntries.class, queryParameters, "time_entries.xml");
     }
 
     public TimeEntries getDaily() {
-        Response response = get("daily.xml");
-        return getModel(response, TimeEntries.class);
+        return getObject(TimeEntries.class, "daily.xml");
     }
 
     public TimeEntryGroups getTimeEntriesGroupBy(String groupBy) {
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("time_entries.xml");
-
-        builder.addQueryParameter("group_by", groupBy);
-
-        Response response = get(builder.build());
-        return getModel(response, TimeEntryGroups.class);
+        return getObject(TimeEntryGroups.class, Map.of("group_by", groupBy), "time_entries.xml");
     }
 
     public TimeEntry getTimeEntry(long id) {
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("time_entries")
-                .addPathSegment(id + ".xml");
-
-        Response response = get(builder.build());
-        return getModel(response, TimeEntry.class);
+        return getObject(TimeEntry.class, "time_entries", id + ".xml");
     }
 
     public TimeEntry createTimeEntry(TimeEntry timeEntry) {
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("time_entries.xml");
-
-        Response response = post(builder.build(), TimeEntry.class, timeEntry);
-        return getModel(response, TimeEntry.class);
+        return createObject(TimeEntry.class, timeEntry, "time_entries.xml");
     }
 
-    public TimeEntry updateTimeEntry(TimeEntry timeEntry) {
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("time_entries")
-                .addPathSegment(timeEntry.getId().getValue() + ".xml");
-
-        Response response = patch(builder.build(), TimeEntry.class, timeEntry);
-        return getModel(response, TimeEntry.class);
+    public void updateTimeEntry(TimeEntry timeEntry) {
+        updateObject(TimeEntry.class, timeEntry, "time_entries", timeEntry.getId().getValue() + ".xml");
     }
 
     public void deleteTimeEntry(long id) {
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("time_entries.xml")
-                .addPathSegment(id + ".xml");
-
-        Response response = delete(builder.build());
-        if (response.code() != 200) {
-            throw new MiteException(response.code());
-        }
+        deleteObject(TimeEntry.class, "time_entries", id + ".xml");
     }
 
     public Tracker getTracker() {
-        Response response = get("tracker.xml");
-        return getModel(response, Tracker.class);
+        return getObject(Tracker.class, "tracker.xml");
     }
 
     public Tracker startTracker(Long id) {
@@ -189,84 +151,201 @@ public class MiteClient {
         throw new UnsupportedOperationException();
     }
 
-    public Customers getCustomers() {
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("customers.xml");
+    public Customers getCustomers(String name, Integer limit, Integer page) {
+        var queryParameters = new HashMap<String, String>();
 
-        Response response = get(builder.build());
-        return getModel(response, Customers.class);
+        if (name != null) {
+            queryParameters.put("name", name);
+        }
+        if (limit != null) {
+            queryParameters.put("limit", limit.toString());
+        }
+        if (page != null) {
+            queryParameters.put("page", page.toString());
+        }
+
+        return getObject(Customers.class, queryParameters, "customers.xml");
     }
 
-    public Customers getArchivedCustomers() {
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("customers")
-                .addPathSegment("archived.xml");
+    public Customers getArchivedCustomers(String name, Integer limit, Integer page) {
+        var queryParameters = new HashMap<String, String>();
 
-        Response response = get(builder.build());
-        return getModel(response, Customers.class);
+        if (name != null) {
+            queryParameters.put("name", name);
+        }
+        if (limit != null) {
+            queryParameters.put("limit", limit.toString());
+        }
+        if (page != null) {
+            queryParameters.put("page", page.toString());
+        }
+
+        return getObject(Customers.class, queryParameters, "customers", "archived.xml");
     }
 
     public Customer getCustomer(long id) {
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("customers")
-                .addPathSegment(id + ".xml");
-
-        Response response = get(builder.build());
-        return getModel(response, Customer.class);
+        return getObject(Customer.class, "customers", id + ".xml");
     }
 
     public Customer createCustomer(Customer customer) {
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("customers.xml");
-
-        Response response = post(builder.build(), Customer.class, customer);
-        return getModel(response, Customer.class);
+        return createObject(Customer.class, customer, "customers.xml");
     }
 
     public void updateCustomer(Customer customer) {
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("customers")
-                .addPathSegment(customer.getId().getValue() + ".xml");
-
-        Response response = patch(builder.build(), Customer.class, customer);
-        if (response.code() != 200) {
-            throw new MiteException(response.code());
-        }
+        updateObject(Customer.class, customer, "customers", customer.getId().getValue() + ".xml");
     }
 
     public void deleteCustomer(long id) {
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment("customers")
-                .addPathSegment(id + ".xml");
-
-        Response response = delete(builder.build());
-        if (response.code() != 200) {
-            throw new MiteException(response.code());
-        }
+        deleteObject(Customer.class, "customers", id + ".xml");
     }
 
-    private Response get(String endpoint) {
-        return get(new HttpUrl.Builder()
-                .scheme("https")
-                .host(host)
-                .addPathSegment(endpoint).build());
+    public Projects getProjects(String name, String customerId, Integer limit, Integer page) {
+        var queryParameters = new HashMap<String, String>();
+
+        if (name != null) {
+            queryParameters.put("name", name);
+        }
+        if (customerId != null) {
+            queryParameters.put("customer_id", customerId);
+        }
+        if (limit != null) {
+            queryParameters.put("limit", limit.toString());
+        }
+        if (page != null) {
+            queryParameters.put("page", page.toString());
+        }
+
+        return getObject(Projects.class, queryParameters, "projects.xml");
+    }
+
+    public Projects getArchivedProjects(String name, String customerId, Integer limit, Integer page) {
+        var queryParameters = new HashMap<String, String>();
+
+        if (name != null) {
+            queryParameters.put("name", name);
+        }
+        if (customerId != null) {
+            queryParameters.put("customer_id", customerId);
+        }
+        if (limit != null) {
+            queryParameters.put("limit", limit.toString());
+        }
+        if (page != null) {
+            queryParameters.put("page", page.toString());
+        }
+
+        return getObject(Projects.class, queryParameters, "projects", "archived.xml");
+    }
+
+    public Project getProject(long id) {
+        return getObject(Project.class, "projects", id + ".xml");
+    }
+
+    public Project createProject(Project project) {
+        return createObject(Project.class, project, "projects.xml");
+    }
+
+    public void updateProject(Project project) {
+        updateObject(Project.class, project, "projects", project.getId().getValue() + ".xml");
+    }
+
+    public void deleteProject(long id) {
+        deleteObject(Project.class, "projects", id + ".xml");
+    }
+
+    public Services getServices(String name, Integer limit, Integer page) {
+        var queryParameters = new HashMap<String, String>();
+
+        if (name != null) {
+            queryParameters.put("name", name);
+        }
+        if (limit != null) {
+            queryParameters.put("limit", limit.toString());
+        }
+        if (page != null) {
+            queryParameters.put("page", page.toString());
+        }
+
+        return getObject(Services.class, queryParameters, "services.xml");
+    }
+
+    public Services getArchivedServices(String name, Integer limit, Integer page) {
+        var queryParameters = new HashMap<String, String>();
+
+        if (name != null) {
+            queryParameters.put("name", name);
+        }
+        if (limit != null) {
+            queryParameters.put("limit", limit.toString());
+        }
+        if (page != null) {
+            queryParameters.put("page", page.toString());
+        }
+
+        return getObject(Services.class, queryParameters, "services", "archived.xml");
+    }
+
+    public Service getService(long id) {
+        return getObject(Service.class, "services", id + ".xml");
+    }
+
+    public Service createService(Service service) {
+        return createObject(Service.class, service, "services.xml");
+    }
+
+    public void updateService(Service service) {
+        updateObject(Service.class, service, "services", service.getId().getValue() + ".xml");
+    }
+
+    public void deleteService(long id) {
+        deleteObject(Service.class, "services", id + ".xml");
+    }
+
+    public Users getUsers(String name, String email, Integer limit, Integer page) {
+        var queryParameters = new HashMap<String, String>();
+
+        if (name != null) {
+            queryParameters.put("name", name);
+        }
+        if (email != null) {
+            queryParameters.put("email", email);
+        }
+        if (limit != null) {
+            queryParameters.put("limit", limit.toString());
+        }
+        if (page != null) {
+            queryParameters.put("page", page.toString());
+        }
+
+        return getObject(Users.class, queryParameters, "users.xml");
+    }
+
+    public Users getArchivedUsers(String name, String email, Integer limit, Integer page) {
+        var queryParameters = new HashMap<String, String>();
+
+        if (name != null) {
+            queryParameters.put("name", name);
+        }
+        if (email != null) {
+            queryParameters.put("email", email);
+        }
+        if (limit != null) {
+            queryParameters.put("limit", limit.toString());
+        }
+        if (page != null) {
+            queryParameters.put("page", page.toString());
+        }
+
+        return getObject(Users.class, queryParameters, "users", "archived.xml");
+    }
+
+    public User getUser(long id) {
+        return getObject(User.class, "users", id + ".xml");
     }
 
     private Response get(HttpUrl httpUrl) {
         try {
-            Request request = new Request.Builder()
+            var request = new Request.Builder()
                     .url(httpUrl)
                     .addHeader("X-MiteApiKey", apikey)
                     .build();
@@ -278,12 +357,12 @@ public class MiteClient {
 
     private <T> Response post(HttpUrl httpUrl, Class<T> objClass, Object obj) {
         try {
-            StringWriter stringWriter = new StringWriter();
+            var stringWriter = new StringWriter();
             JAXBContext.newInstance(objClass).createMarshaller().marshal(obj, stringWriter);
 
-            RequestBody requestBody = RequestBody.create(MediaType.parse("application/xml"), stringWriter.toString());
+            var requestBody = RequestBody.create(MediaType.parse("application/xml"), stringWriter.toString());
 
-            Request request = new Request.Builder()
+            var request = new Request.Builder()
                     .url(httpUrl)
                     .addHeader("X-MiteApiKey", apikey)
                     .post(requestBody)
@@ -296,12 +375,12 @@ public class MiteClient {
 
     private <T> Response patch(HttpUrl httpUrl, Class<T> objClass, Object obj) {
         try {
-            StringWriter stringWriter = new StringWriter();
+            var stringWriter = new StringWriter();
             JAXBContext.newInstance(objClass).createMarshaller().marshal(obj, stringWriter);
 
-            RequestBody requestBody = RequestBody.create(MediaType.parse("application/xml"), stringWriter.toString());
+            var requestBody = RequestBody.create(MediaType.parse("application/xml"), stringWriter.toString());
 
-            Request request = new Request.Builder()
+            var request = new Request.Builder()
                     .url(httpUrl)
                     .addHeader("X-MiteApiKey", apikey)
                     .patch(requestBody)
@@ -314,7 +393,7 @@ public class MiteClient {
 
     private Response delete(HttpUrl httpUrl) {
         try {
-            Request request = new Request.Builder()
+            var request = new Request.Builder()
                     .url(httpUrl)
                     .addHeader("X-MiteApiKey", apikey)
                     .delete()
@@ -328,9 +407,7 @@ public class MiteClient {
     private <T> T getModel(Response response, Class<T> modelClass) {
         try {
             if (response.body() != null) {
-                String responseString = response.body().string();
-
-                Logger.getLogger("mite").warning(responseString);
+                var responseString = response.body().string();
 
                 if (responseString.contains("<errors>")) {
                     throw new MiteException(response.code(),
@@ -343,6 +420,73 @@ public class MiteClient {
             }
         } catch (IOException | JAXBException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private <T> T getObject(Class<T> clazz, String... pathSegments) {
+        var builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host);
+        for (String pathSegment : pathSegments) {
+            builder.addPathSegment(pathSegment);
+        }
+
+        var response = get(builder.build());
+        return getModel(response, clazz);
+    }
+
+    private <T> T getObject(Class<T> clazz, Map<String, String> queryParameters, String... pathSegments) {
+        var builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host);
+        for (String pathSegment : pathSegments) {
+            builder.addPathSegment(pathSegment);
+        }
+        for (Map.Entry<String, String> entry : queryParameters.entrySet()) {
+            builder.addQueryParameter(entry.getKey(), entry.getValue());
+        }
+
+        var response = get(builder.build());
+        return getModel(response, clazz);
+    }
+
+    private <T> T createObject(Class<T> clazz, Object object, String... pathSegments) {
+        var builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host);
+        for (String pathSegment : pathSegments) {
+            builder.addPathSegment(pathSegment);
+        }
+
+        var response = post(builder.build(), clazz, object);
+        return getModel(response, clazz);
+    }
+
+    private <T> void updateObject(Class<T> clazz, Object object, String... pathSegments) {
+        var builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host);
+        for (String pathSegment : pathSegments) {
+            builder.addPathSegment(pathSegment);
+        }
+
+        var response = patch(builder.build(), clazz, object);
+        if (response.code() != 200) {
+            throw new MiteException(response.code());
+        }
+    }
+
+    private <T> void deleteObject(Class<T> clazz, String... pathSegments) {
+        var builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host);
+        for (String pathSegment : pathSegments) {
+            builder.addPathSegment(pathSegment);
+        }
+
+        var response = delete(builder.build());
+        if (response.code() != 200) {
+            throw new MiteException(response.code());
         }
     }
 }
