@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>io.seventytwo.oss</groupId>
     <artifactId>mite-java</artifactId>
     <version>0.1.2-SNAPSHOT</version>
 
