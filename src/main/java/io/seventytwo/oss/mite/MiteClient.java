@@ -53,63 +53,19 @@ public class MiteClient {
     }
 
     public TimeEntries getTimeEntries(TimeEntriesRequest timeEntriesRequest) {
-        var queryParameters = new HashMap<String, String>();
-
-        if (timeEntriesRequest.userId != null) {
-            queryParameters.put("user_id", timeEntriesRequest.userId);
-        }
-        if (timeEntriesRequest.customerId != null) {
-            queryParameters.put("customer_id", timeEntriesRequest.customerId);
-        }
-        if (timeEntriesRequest.projectId != null) {
-            queryParameters.put("project_id", timeEntriesRequest.projectId);
-        }
-        if (timeEntriesRequest.serviceId != null) {
-            queryParameters.put("service_id", timeEntriesRequest.serviceId);
-        }
-        if (timeEntriesRequest.note != null) {
-            queryParameters.put("note", timeEntriesRequest.note);
-        }
-        if (timeEntriesRequest.at != null) {
-            queryParameters.put("at", timeEntriesRequest.at);
-        }
-        if (timeEntriesRequest.from != null) {
-            queryParameters.put("from", timeEntriesRequest.from);
-        }
-        if (timeEntriesRequest.to != null) {
-            queryParameters.put("to", timeEntriesRequest.to);
-        }
-        if (timeEntriesRequest.billable != null) {
-            queryParameters.put("billable", timeEntriesRequest.billable.toString());
-        }
-        if (timeEntriesRequest.locked != null) {
-            queryParameters.put("locked", timeEntriesRequest.locked.toString());
-        }
-        if (timeEntriesRequest.tracking != null) {
-            queryParameters.put("tracking", timeEntriesRequest.tracking.toString());
-        }
-        if (timeEntriesRequest.sort != null) {
-            queryParameters.put("sort", timeEntriesRequest.sort);
-        }
-        if (timeEntriesRequest.direction != null) {
-            queryParameters.put("direction", timeEntriesRequest.direction);
-        }
-        if (timeEntriesRequest.limit != null) {
-            queryParameters.put("limit", timeEntriesRequest.limit.toString());
-        }
-        if (timeEntriesRequest.page != null) {
-            queryParameters.put("page", timeEntriesRequest.page.toString());
-        }
-
-        return getObject(TimeEntries.class, queryParameters, "time_entries.xml");
+        return getObject(TimeEntries.class, getQueryParameters(timeEntriesRequest), "time_entries.xml");
     }
 
     public TimeEntries getDaily() {
         return getObject(TimeEntries.class, "daily.xml");
     }
 
-    public TimeEntryGroups getTimeEntriesGroupBy(String groupBy) {
-        return getObject(TimeEntryGroups.class, Map.of("group_by", groupBy), "time_entries.xml");
+    public TimeEntryGroups getTimeEntriesGroupBy(TimeEntriesRequest timeEntriesRequest, String... groupBys) {
+        HashMap<String, String> queryParameters = getQueryParameters(timeEntriesRequest);
+        for (String groupBy : groupBys) {
+            queryParameters.put("group_by", groupBy);
+        }
+        return getObject(TimeEntryGroups.class, queryParameters, "time_entries.xml");
     }
 
     public TimeEntry getTimeEntry(long id) {
@@ -505,5 +461,56 @@ public class MiteClient {
         } else {
             return response;
         }
+    }
+
+    private HashMap<String, String> getQueryParameters(TimeEntriesRequest timeEntriesRequest) {
+        var queryParameters = new HashMap<String, String>();
+
+        if (timeEntriesRequest.userId != null) {
+            queryParameters.put("user_id", timeEntriesRequest.userId);
+        }
+        if (timeEntriesRequest.customerId != null) {
+            queryParameters.put("customer_id", timeEntriesRequest.customerId);
+        }
+        if (timeEntriesRequest.projectId != null) {
+            queryParameters.put("project_id", timeEntriesRequest.projectId);
+        }
+        if (timeEntriesRequest.serviceId != null) {
+            queryParameters.put("service_id", timeEntriesRequest.serviceId);
+        }
+        if (timeEntriesRequest.note != null) {
+            queryParameters.put("note", timeEntriesRequest.note);
+        }
+        if (timeEntriesRequest.at != null) {
+            queryParameters.put("at", timeEntriesRequest.at);
+        }
+        if (timeEntriesRequest.from != null) {
+            queryParameters.put("from", timeEntriesRequest.from);
+        }
+        if (timeEntriesRequest.to != null) {
+            queryParameters.put("to", timeEntriesRequest.to);
+        }
+        if (timeEntriesRequest.billable != null) {
+            queryParameters.put("billable", timeEntriesRequest.billable.toString());
+        }
+        if (timeEntriesRequest.locked != null) {
+            queryParameters.put("locked", timeEntriesRequest.locked.toString());
+        }
+        if (timeEntriesRequest.tracking != null) {
+            queryParameters.put("tracking", timeEntriesRequest.tracking.toString());
+        }
+        if (timeEntriesRequest.sort != null) {
+            queryParameters.put("sort", timeEntriesRequest.sort);
+        }
+        if (timeEntriesRequest.direction != null) {
+            queryParameters.put("direction", timeEntriesRequest.direction);
+        }
+        if (timeEntriesRequest.limit != null) {
+            queryParameters.put("limit", timeEntriesRequest.limit.toString());
+        }
+        if (timeEntriesRequest.page != null) {
+            queryParameters.put("page", timeEntriesRequest.page.toString());
+        }
+        return queryParameters;
     }
 }

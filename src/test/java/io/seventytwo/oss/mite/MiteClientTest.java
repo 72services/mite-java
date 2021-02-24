@@ -55,8 +55,8 @@ class MiteClientTest {
     }
 
     @Test
-    void getDailgetTimeEntriesGroupBy() {
-        var timeEntryGroups = miteClient.getTimeEntriesGroupBy("user");
+    void getTimeEntriesGroupBy() {
+        var timeEntryGroups = miteClient.getTimeEntriesGroupBy(new TimeEntriesRequest(), "user");
 
         assertNotNull(timeEntryGroups);
         assertFalse(timeEntryGroups.getTimeEntryGroup().isEmpty());
