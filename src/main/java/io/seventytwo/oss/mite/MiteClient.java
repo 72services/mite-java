@@ -379,8 +379,10 @@ public class MiteClient {
         try {
             if (response.body() != null) {
                 var responseString = response.body().string();
-
-                if (responseString.contains("<errors>")) {
+                // WORKAROUND: The API returns <time-entries type="array"/> in case no entries are found, even if group_by is requested
+                if (modelClass == TimeEntryGroups.class && responseString.contains("<time-entries type=\"array\"/>")) {
+                    return (T) new TimeEntryGroups();
+                } else if (responseString.contains("<errors>")) {
                     throw new MiteException(response.code(),
                             (Errors) JAXBContext.newInstance(Errors.class).createUnmarshaller().unmarshal(new StringReader(responseString)));
                 } else {
