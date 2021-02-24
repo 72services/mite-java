@@ -1,15 +1,13 @@
 package io.seventytwo.oss.mite;
 
-import io.seventytwo.oss.mite.model.Bookmark;
 import io.seventytwo.oss.mite.model.Customer;
 import io.seventytwo.oss.mite.model.Project;
 import io.seventytwo.oss.mite.model.Service;
 import io.seventytwo.oss.mite.model.TimeEntry;
+import io.seventytwo.oss.mite.model.Tracker;
 import io.seventytwo.oss.mite.model.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,8 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MiteClientTest {
-
-    public static final Logger LOGGER = Logger.getLogger(MiteClientTest.class.getName());
 
     private static MiteClient miteClient;
 
@@ -55,7 +51,7 @@ class MiteClientTest {
         var timeEntries = miteClient.getDaily();
 
         assertNotNull(timeEntries);
-        assertFalse(timeEntries.getTimeEntry().isEmpty());
+        assertTrue(timeEntries.getTimeEntry().isEmpty());
     }
 
     @Test
@@ -283,5 +279,23 @@ class MiteClientTest {
         var bookmark = miteClient.getBookmark(bookmarks.getBookmark().get(0).getId().getValue());
 
         assertNotNull(bookmark);
+    }
+
+    @Test
+    void startStopTracker() {
+        var request = new TimeEntry();
+        var response = miteClient.createTimeEntry(request);
+
+        assertNotNull(response);
+
+        Tracker tracker = miteClient.startTracker(response.getId().getValue());
+        assertNotNull(tracker);
+
+        tracker = miteClient.stopTracker(response.getId().getValue());
+        assertNotNull(tracker);
+
+        assertNotNull(response);
+
+        miteClient.deleteTimeEntry(response.getId().getValue());
     }
 }

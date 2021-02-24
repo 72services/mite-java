@@ -125,7 +125,7 @@ public class MiteClient {
     }
 
     public void deleteTimeEntry(long id) {
-        deleteObject(TimeEntry.class, "time_entries", id + ".xml");
+        deleteObject("time_entries", id + ".xml");
     }
 
     public Tracker getTracker() {
@@ -133,13 +133,23 @@ public class MiteClient {
     }
 
     public Tracker startTracker(Long id) {
-        // TODO
-        throw new UnsupportedOperationException();
+        var builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host(host)
+                .addPathSegment("tracker")
+                .addPathSegment(id + ".xml");
+
+        var response = patch(builder.build(), Tracker.class, new Tracker());
+        if (response.code() != 200) {
+            throw new MiteException(response.code());
+        } else {
+            return getModel(response, Tracker.class);
+        }
     }
 
     public Tracker stopTracker(Long id) {
-        // TODO
-        throw new UnsupportedOperationException();
+        Response response = deleteObject("tracker", id + ".xml");
+        return getModel(response, Tracker.class);
     }
 
     public Bookmarks getBookmarks() {
@@ -195,7 +205,7 @@ public class MiteClient {
     }
 
     public void deleteCustomer(long id) {
-        deleteObject(Customer.class, "customers", id + ".xml");
+        deleteObject("customers", id + ".xml");
     }
 
     public Projects getProjects(String name, String customerId, Integer limit, Integer page) {
@@ -249,7 +259,7 @@ public class MiteClient {
     }
 
     public void deleteProject(long id) {
-        deleteObject(Project.class, "projects", id + ".xml");
+        deleteObject("projects", id + ".xml");
     }
 
     public Services getServices(String name, Integer limit, Integer page) {
@@ -297,7 +307,7 @@ public class MiteClient {
     }
 
     public void deleteService(long id) {
-        deleteObject(Service.class, "services", id + ".xml");
+        deleteObject("services", id + ".xml");
     }
 
     public Users getUsers(String name, String email, Integer limit, Integer page) {
@@ -374,16 +384,21 @@ public class MiteClient {
 
     private <T> Response patch(HttpUrl httpUrl, Class<T> objClass, Object obj) {
         try {
-            var stringWriter = new StringWriter();
-            JAXBContext.newInstance(objClass).createMarshaller().marshal(obj, stringWriter);
+            RequestBody requestBody = null;
+            if (obj != null) {
+                var stringWriter = new StringWriter();
+                JAXBContext.newInstance(objClass).createMarshaller().marshal(obj, stringWriter);
 
-            var requestBody = RequestBody.create(MediaType.parse("application/xml"), stringWriter.toString());
+                requestBody = RequestBody.create(MediaType.parse("application/xml"), stringWriter.toString());
+            }
 
+            @SuppressWarnings("ConstantConditions")
             var request = new Request.Builder()
                     .url(httpUrl)
                     .addHeader("X-MiteApiKey", apikey)
                     .patch(requestBody)
                     .build();
+
             return client.newCall(request).execute();
         } catch (IOException | JAXBException e) {
             throw new RuntimeException(e);
@@ -403,6 +418,7 @@ public class MiteClient {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <T> T getModel(Response response, Class<T> modelClass) {
         try {
             if (response.body() != null) {
@@ -475,7 +491,7 @@ public class MiteClient {
         }
     }
 
-    private <T> void deleteObject(Class<T> clazz, String... pathSegments) {
+    private Response deleteObject(String... pathSegments) {
         var builder = new HttpUrl.Builder()
                 .scheme("https")
                 .host(host);
@@ -486,6 +502,8 @@ public class MiteClient {
         var response = delete(builder.build());
         if (response.code() != 200) {
             throw new MiteException(response.code());
+        } else {
+            return response;
         }
     }
 }

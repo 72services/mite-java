@@ -20,63 +20,63 @@ public class TimeEntriesRequest {
 
     public static class Builder {
 
-        TimeEntriesRequest timeEntriesRequest;
+        final TimeEntriesRequest timeEntriesRequest;
 
         public Builder() {
             this.timeEntriesRequest = new TimeEntriesRequest();
         }
 
-        public Builder withUserid(String userid) {
+        public Builder userid(String userid) {
             timeEntriesRequest.userId = userid;
             return this;
         }
 
-        public Builder withCustomerId(String customerId) {
+        public Builder customerId(String customerId) {
             timeEntriesRequest.customerId = customerId;
             return this;
         }
 
-        public Builder withProjectId(String projectId) {
+        public Builder projectId(String projectId) {
             timeEntriesRequest.projectId = projectId;
             return this;
         }
 
-        public Builder withServiceId(String serviceId) {
+        public Builder serviceId(String serviceId) {
             timeEntriesRequest.serviceId = serviceId;
             return this;
         }
 
-        public Builder withNote(String note) {
+        public Builder note(String note) {
             timeEntriesRequest.note = note;
             return this;
         }
 
-        public Builder withAt(String at) {
+        public Builder at(String at) {
             timeEntriesRequest.at = at;
             return this;
         }
 
-        public Builder withFrom(String from) {
+        public Builder from(String from) {
             timeEntriesRequest.from = from;
             return this;
         }
 
-        public Builder withTo(String to) {
+        public Builder to(String to) {
             timeEntriesRequest.to = to;
             return this;
         }
 
-        public Builder withBillable(boolean billable) {
+        public Builder billable(boolean billable) {
             timeEntriesRequest.billable = billable;
             return this;
         }
 
-        public Builder withLocked(boolean locked) {
+        public Builder locked(boolean locked) {
             timeEntriesRequest.locked = locked;
             return this;
         }
 
-        public Builder withTracking(boolean tracking) {
+        public Builder tracking(boolean tracking) {
             timeEntriesRequest.tracking = tracking;
             return this;
         }
