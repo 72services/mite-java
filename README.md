@@ -9,7 +9,7 @@ mite-java provides a Java API to the mite.api https://mite.yo.lk/api/
     <dependency>
         <groupId>io.seventytwo.oss</groupId>
         <artifactId>mite-java</artifactId>
-        <version>0.1.2</version>
+        <version>1.0.1</version>
     </dependency>
 
 ### Examples
