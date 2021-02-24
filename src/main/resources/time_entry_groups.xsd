@@ -34,6 +34,9 @@
                                 </xs:complexType>
                             </xs:element>
                             <xs:element name="user-name" type="xs:string" />
+                            <xs:element name="customer" type="xs:string" />
+                            <xs:element name="project" type="xs:string" />
+                            <xs:element name="service" type="xs:string" />
                             <xs:element name="from">
                                 <xs:complexType>
                                     <xs:simpleContent>
