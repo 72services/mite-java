@@ -9,8 +9,6 @@ import io.seventytwo.oss.mite.model.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.logging.Logger;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -53,7 +51,7 @@ class MiteClientTest {
         var timeEntries = miteClient.getDaily();
 
         assertNotNull(timeEntries);
-        assertFalse(timeEntries.getTimeEntry().isEmpty());
+        assertTrue(timeEntries.getTimeEntry().isEmpty());
     }
 
     @Test

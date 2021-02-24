@@ -392,6 +392,7 @@ public class MiteClient {
                 requestBody = RequestBody.create(MediaType.parse("application/xml"), stringWriter.toString());
             }
 
+            @SuppressWarnings("ConstantConditions")
             var request = new Request.Builder()
                     .url(httpUrl)
                     .addHeader("X-MiteApiKey", apikey)
