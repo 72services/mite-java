@@ -1,0 +1,2 @@
+GET https://mite-java.mite.yo.lk/time_entries.xml?group_by=project,user
+X-MiteApiKey:966b6e5770747412
