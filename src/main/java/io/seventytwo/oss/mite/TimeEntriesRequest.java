@@ -26,7 +26,7 @@ public class TimeEntriesRequest {
             this.timeEntriesRequest = new TimeEntriesRequest();
         }
 
-        public Builder userid(String userid) {
+        public Builder userId(String userid) {
             timeEntriesRequest.userId = userid;
             return this;
         }
