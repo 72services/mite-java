@@ -67,7 +67,6 @@ class MiteClientTest {
         var timeEntryGroups = miteClient.getTimeEntriesGroupBy(new TimeEntriesRequest.Builder().at("today").build(), "day");
 
         assertNotNull(timeEntryGroups);
-        assertTrue(timeEntryGroups.getTimeEntryGroup().isEmpty());
     }
 
     @Test
