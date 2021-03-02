@@ -7,7 +7,7 @@
 
     <groupId>io.seventytwo.oss</groupId>
     <artifactId>mite-java</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
 
     <name>mite-java</name>
     <description>Java API for mite.</description>
