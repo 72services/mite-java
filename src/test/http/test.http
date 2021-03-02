@@ -1,0 +1,5 @@
+GET https://mite-java.mite.yo.lk/time_entries.xml?at=today&group_by=day
+X-MiteApiKey:782bb0eb97c1a286
+
+GET https://mite-java.mite.yo.lk/time_entries.xml?at=today&group_by=day
+X-MiteApiKey: 915de3332183121e

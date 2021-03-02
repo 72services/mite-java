@@ -1,5 +1,6 @@
 package io.seventytwo.oss.mite;
 
+import io.seventytwo.oss.mite.logging.LoggingInterceptor;
 import io.seventytwo.oss.mite.model.Account;
 import io.seventytwo.oss.mite.model.Bookmark;
 import io.seventytwo.oss.mite.model.Bookmarks;
@@ -41,7 +42,7 @@ public class MiteClient {
         this.host = host;
         this.apikey = apikey;
 
-        client = new OkHttpClient().newBuilder().build();
+        client = new OkHttpClient().newBuilder().addInterceptor(new LoggingInterceptor()).build();
     }
 
     public Account getAccount() {
@@ -379,10 +380,7 @@ public class MiteClient {
         try {
             if (response.body() != null) {
                 var responseString = response.body().string();
-                // WORKAROUND: The API returns <time-entries type="array"/> in case no entries are found, even if group_by is requested
-                if (modelClass == TimeEntryGroups.class && responseString.contains("<time-entries type=\"array\"/>")) {
-                    return (T) new TimeEntryGroups();
-                } else if (responseString.contains("<errors>")) {
+                if (responseString.contains("<errors>")) {
                     throw new MiteException(response.code(),
                             (Errors) JAXBContext.newInstance(Errors.class).createUnmarshaller().unmarshal(new StringReader(responseString)));
                 } else {
