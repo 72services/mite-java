@@ -21,7 +21,7 @@ class MiteClientTest {
 
     @BeforeAll
     static void beforeAll() {
-        miteClient = new MiteClient("mite-java.mite.yo.lk", "966b6e5770747412");
+        miteClient = new MiteClient("mite-java.mite.yo.lk", "782bb0eb97c1a286");
     }
 
     @Test
@@ -60,6 +60,13 @@ class MiteClientTest {
 
         assertNotNull(timeEntryGroups);
         assertFalse(timeEntryGroups.getTimeEntryGroup().isEmpty());
+    }
+
+    @Test
+    void getTimeEntriesGroupByDay() {
+        var timeEntryGroups = miteClient.getTimeEntriesGroupBy(new TimeEntriesRequest.Builder().at("today").build(), "day");
+
+        assertNotNull(timeEntryGroups);
     }
 
     @Test

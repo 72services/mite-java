@@ -4,8 +4,8 @@ import io.seventytwo.oss.mite.model.Errors;
 
 public class MiteException extends RuntimeException {
 
-    private Errors errors;
     private final int httpStatusCode;
+    private Errors errors;
 
     public MiteException(int httpStatusCode, Errors errors) {
         this.httpStatusCode = httpStatusCode;
@@ -26,12 +26,12 @@ public class MiteException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return httpStatusCode + getErrorString();
+        return httpStatusCode + " " + getErrorString();
     }
 
     private String getErrorString() {
         StringBuilder sb = new StringBuilder();
-        if (errors!= null) {
+        if (errors != null) {
             for (String error : errors.getError()) {
                 sb.append(error).append(", ");
             }
