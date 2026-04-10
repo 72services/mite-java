@@ -1,3 +1,5 @@
+**This project has moved: https://github.com/martinellich/mite-java**
+
 # Java API for mite.
 
 mite-java provides a Java API to the mite.api https://mite.yo.lk/api/
